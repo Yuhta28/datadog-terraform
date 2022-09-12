@@ -5,3 +5,7 @@ variable "datadog_api_key" {
 variable "datadog_app_key" {
     type = string
 }
+
+variable "AWS_account" {
+    type = string
+}

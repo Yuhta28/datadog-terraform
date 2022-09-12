@@ -12,3 +12,10 @@ resource "datadog_monitor" "process_alert_example" {
   notify_no_data    = false
   renotify_interval = 60
 }
+
+resource "datadog_monitor" "ec2-check" {
+  name = "EC2"
+  type = "service check"
+  message = "EC2 Down!"
+  query = "check.over(tags).last(count).by(group).count_by_status()"
+}
