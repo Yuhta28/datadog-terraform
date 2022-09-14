@@ -18,8 +18,6 @@ resource "datadog_monitor" "ec2-check" {
   type               = "service check"
   query              = "\"datadog.agent.up\".over(\"*\").by(\"host\").last(2).count_by_status()"
   enable_logs_sample = true
-  locked             = false
-  new_host_delay     = 300
   notify_no_data     = true
   notify_audit       = false
   priority           = 1
