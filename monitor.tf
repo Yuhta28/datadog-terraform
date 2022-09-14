@@ -17,5 +17,7 @@ resource "datadog_monitor" "ec2-check" {
   name = "EC2"
   type = "service check"
   message = "EC2 Down!"
-  query = "check.over(tags).last(count).by(group).count_by_status()"
+  query = <<EOQ
+  "datadog.agent.up.last(6).count_by_status()"
+  EOQ
 }
