@@ -13,7 +13,7 @@ resource "datadog_monitor" "process_alert_example" {
   renotify_interval = 60
 }
 
-resource "datadog_monitor" "ec2-check" {
+#resource "datadog_monitor" "ec2-check" {
 #  name               = "EC2 host connectivity"
 #  type               = "service check"
 #  query              = "\"datadog.agent.up\".over(\"*\").by(\"host\").last(2).count_by_status()"
