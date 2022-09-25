@@ -17,9 +17,9 @@ resource "datadog_monitor" "ec2-check" {
   name               = "EC2 host connectivity"
   type               = "service check"
   query              = "\"datadog.agent.up\".over(\"*\").by(\"host\").last(2).count_by_status()"
-  enable_logs_sample = true
-  notify_no_data     = true
-  notify_audit       = false
+  #enable_logs_sample = true
+  #notify_no_data     = true
+  #notify_audit       = false
   priority           = 1
   #no_data_timeframe  = 2
   #renotify_interval  = 10
