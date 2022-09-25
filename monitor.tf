@@ -21,8 +21,8 @@ resource "datadog_monitor" "ec2-check" {
   notify_no_data     = false
   notify_audit       = false
   priority           = 1
-  no_data_timeframe  = 2
-  renotify_interval  = 10
+  #no_data_timeframe  = 2
+  #renotify_interval  = 10
   include_tags       = true
   timeout_h          = 0
   message            = <<EOF
