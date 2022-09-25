@@ -13,33 +13,28 @@ resource "datadog_monitor" "process_alert_example" {
   renotify_interval = 60
 }
 
-#resource "datadog_monitor" "ec2-check" {
-#  name               = "EC2 host connectivity"
-#  type               = "service check"
-#  query              = "\"datadog.agent.up\".over(\"*\").by(\"host\").last(2).count_by_status()"
-#  enable_logs_sample = true
-#  notify_no_data     = true
-#  notify_audit       = false
-#  priority           = 1
-#  no_data_timeframe  = 2
-#  renotify_interval  = 10
-#  include_tags       = true
-#  timeout_h          = 0
-#  message            = <<EOF
-#{{#is_alert}}
-#@all  
-#There is an anomaly in EC2 host connectivity. The host is {{host}}.   
-#If you are able to analyze and resolve, please chat for this alert message and then start to work on it.  
-#{{/is_alert}}
-#
-#{{#is_recovery}}
-#@all  
-#The alert about EC2 host connectivity was resolved!!  
-#{{/is_recovery}}
-#EOF
-#  escalation_message = <<EOF
-#@all 
-#EC2 host connection is not still recovered. We need to fix this ASAP.  
-#If you are able to analyze and resolve, please chat for this alert message and then start to work on it.
-#EOF
-#}
+resource "datadog_monitor" "ec2-check" {
+  name               = "EC2 host connectivity"
+  type               = "service check"
+  query              = "\"datadog.agent.up\".over(\"*\").by(\"host\").last(2).count_by_status()"
+  enable_logs_sample = true
+  notify_no_data     = true
+  notify_audit       = false
+  priority           = 1
+  no_data_timeframe  = 2
+  renotify_interval  = 10
+  include_tags       = true
+  timeout_h          = 0
+  message            = <<EOF
+{{#is_alert}}
+@slack-infratest  
+<!here>There is an anomaly in EC2 host connectivity. The host is {{host}}.   
+If you are able to analyze and resolve, please chat for this alert message and then start to work on it.  
+{{/is_alert}}
+
+{{#is_recovery}}
+@slack-infratest  
+The alert about EC2 host connectivity was resolved!!  
+{{/is_recovery}}
+EOF
+}
