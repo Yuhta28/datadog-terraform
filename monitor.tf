@@ -18,7 +18,7 @@ resource "datadog_monitor" "ec2-check" {
   type               = "service check"
   query              = "\"datadog.agent.up\".over(\"*\").by(\"host\").last(2).count_by_status()"
   enable_logs_sample = true
-  notify_no_data     = false
+  notify_no_data     = true
   notify_audit       = false
   priority           = 1
   #no_data_timeframe  = 2
