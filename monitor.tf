@@ -16,13 +16,11 @@ resource "datadog_monitor" "process_alert_example" {
 resource "datadog_monitor" "ec2-check" {
   name               = "EC2 host connectivity"
   type               = "service check"
-  query              = "\"datadog.agent.up\".over(\"*\").by(\"*\").last(2).count_by_status()"
+  query              = "\"datadog.agent.up\".over(\"*\").by(\"*\").last(1).pct_by_status()"
   #enable_logs_sample = true
   notify_no_data     = true
   #notify_audit       = false
   priority           = 1
-  #no_data_timeframe  = 2
-  #renotify_interval  = 10
   include_tags       = true
   timeout_h          = 0
   message            = <<EOF
