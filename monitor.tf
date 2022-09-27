@@ -36,3 +36,26 @@ The alert about EC2 host connectivity was resolved!!
 {{/is_recovery}}
 EOF
 }
+
+resource "datadog_monitor" "CPU-monitor" {
+  name  = "EC2 CPU monitor"
+  type  = "query alert"
+  query = "avg(last_5m):avg:aws.ec2.cpuutilization{*} by {host} > 25"
+  priority = 1
+  notify_no_data = false
+  renotify_interval = 0
+  new_group_delay = 60
+
+  message = <<EOF
+  {{#is_alert}}
+  @slack-infratest  
+  <!here> High CPU! The host is {{host}}.   
+  If you are able to analyze and resolve, please chat for this alert message and then start to work on it.  
+  {{/is_alert}}
+  
+  {{#is_recovery}}  
+  @slack-infratest  
+  resolved  
+  {{/is_recovery}}
+  EOF
+}
