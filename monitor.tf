@@ -96,6 +96,8 @@ resource "datadog_dashboard" "terraform-dashboard" {
     widget_layout {
       height = 2
       width  = 4
+      x      = 0
+      y      = 0
     }
   }
 }
