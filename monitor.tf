@@ -60,6 +60,7 @@ resource "datadog_monitor" "CPU-monitor" {
   EOF
 }
 
+# Create Dashboard ALB connection
 resource "datadog_dashboard" "terraform-dashboard" {
   title       = "Datadog Dashboard made by Terraform"
   description = "Make By Terraform"
@@ -99,5 +100,29 @@ resource "datadog_dashboard" "terraform-dashboard" {
       x      = 0
       y      = 0
     }
+  }
+}
+
+# Create SLO metric
+resource "datadog_service_level_objective" "terraform-slo-metric" {
+  name = "Sample Metric"
+  type = "metric"
+  query {
+    numerator   = "sum:aws.applicationelb.httpcode_elb_4xx{host:staging-alb-680906109.ap-northeast-1.elb.amazonaws.com}"
+    denominator = "sum:aws.applicationelb.httpcode_target_2xx{host:staging-alb-680906109.ap-northeast-1.elb.amazonaws.com}"
+  }
+  thresholds {
+    timeframe       = "7d"
+    target          = 99.9
+    warning         = 99.99
+    target_display  = "99.900"
+    warning_display = "99.990"
+  }
+  thresholds {
+    timeframe       = "30d"
+    target          = 99.9
+    warning         = 99.99
+    target_display  = "99.900"
+    warning_display = "99.990"
   }
 }
