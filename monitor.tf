@@ -14,16 +14,16 @@ resource "datadog_monitor" "process_alert_example" {
 }
 
 resource "datadog_monitor" "ec2-check" {
-  name               = "EC2 host connectivity"
-  type               = "service check"
-  query              = "\"datadog.agent.up\".over(\"*\").by(\"*\").last(1).pct_by_status()"
+  name  = "EC2 host connectivity"
+  type  = "service check"
+  query = "\"datadog.agent.up\".over(\"*\").by(\"*\").last(1).pct_by_status()"
   #enable_logs_sample = true
-  notify_no_data     = true
+  notify_no_data = true
   #notify_audit       = false
-  priority           = 1
-  include_tags       = true
-  timeout_h          = 0
-  message            = <<EOF
+  priority     = 1
+  include_tags = true
+  timeout_h    = 0
+  message      = <<EOF
 {{#is_alert}}
 @slack-infratest  
 <!here>There is an anomaly in EC2 host connectivity. The host is {{host}}.   
@@ -38,13 +38,13 @@ EOF
 }
 
 resource "datadog_monitor" "CPU-monitor" {
-  name  = "EC2 CPU monitor"
-  type  = "query alert"
-  query = "avg(last_5m):avg:aws.ec2.cpuutilization{*} by {host} > 25"
-  priority = 1
-  notify_no_data = false
+  name              = "EC2 CPU monitor"
+  type              = "query alert"
+  query             = "avg(last_5m):avg:aws.ec2.cpuutilization{*} by {host} > 25"
+  priority          = 1
+  notify_no_data    = false
   renotify_interval = 0
-  new_group_delay = 60
+  new_group_delay   = 60
 
   message = <<EOF
   {{#is_alert}}
@@ -61,7 +61,41 @@ resource "datadog_monitor" "CPU-monitor" {
 }
 
 resource "datadog_dashboard" "terraform-dashboard" {
-  title = "Datadog Dashboard made by Terraform"
+  title       = "Datadog Dashboard made by Terraform"
   description = "Make By Terraform"
   layout_type = "ordered"
+  reflow_type = "fixed"
+
+  widget {
+    timeseries_definition {
+      legend_columns = ["avg", "max", "min", "sum", "value"]
+      legend_layout  = "auto"
+      show_legend    = "true"
+      title_align    = "left"
+      title_size     = 16
+      request {
+        display_type   = "line"
+        on_right_yaxis = false
+        formula {
+          formula_expression = "query1"
+        }
+        query {
+          metric_query {
+            data_source = "metrics"
+            name        = "query1"
+            query       = "sum:aws.applicationelb.active_connection_count{*} by {hostname}.as_count()"
+          }
+        }
+        style {
+          line_type  = "solid"
+          line_width = "normal"
+          palette    = "dog_classic"
+        }
+      }
+    }
+    widget_layout {
+      height = 2
+      width  = 4
+    }
+  }
 }
