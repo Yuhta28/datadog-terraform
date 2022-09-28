@@ -115,14 +115,14 @@ resource "datadog_service_level_objective" "terraform-slo-metric" {
     timeframe       = "7d"
     target          = 30
     warning         = 40
-#    target_display  = "99.900"
+    target_display  = "30."
 #    warning_display = "99.990"
   }
   thresholds {
     timeframe       = "30d"
     target          = 30
     warning         = 40
-#    target_display  = "99.900"
+    target_display  = "30.0"
 #    warning_display = "99.990"
   }
 }
