@@ -59,3 +59,9 @@ resource "datadog_monitor" "CPU-monitor" {
   {{/is_recovery}}
   EOF
 }
+
+resource "datadog_dashboard" "terraform-dashboard" {
+  title = "Datadog Dashboard made by Terraform"
+  description = "Make By Terraform"
+  layout_type = "ordered"
+}
